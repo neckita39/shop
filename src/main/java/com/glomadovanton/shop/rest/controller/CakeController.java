@@ -6,17 +6,17 @@ import com.glomadovanton.shop.exception.CakeNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @Validated
-//@RequestMapping ("v1/cakes")
 public class CakeController {
     private final Cakes cakeList = new Cakes();
     private static long idCounter = 0;
@@ -58,17 +58,28 @@ public class CakeController {
                 .orElseThrow(() -> new CakeNotFoundException("No such cake"));
     }
 
+    //хотел сделать через @valid, но не разобрался, закомментил мои догадки
+
+    //@RequestMapping (path="cakes", headers = "id")
     @PostMapping(path = "cakes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cake> createCake(@RequestBody Cake newCake) {
-        if (!newCake.isFull()) {
+    public ResponseEntity<Cake> createCake(/*@Valid*/ @RequestBody Cake newCake/*, BindingResult bindingResult*/){
+    //  if (bindingResult.hasErrors()) {
+    //      return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    //  } else {
+    //      newCake.setId(idCounter);
+    //      idCounter++;
+    //      cakeList.getCakeList().add(newCake);
+    //      return new ResponseEntity<>(HttpStatus.CREATED);
+    //  }
+        //сделал по простому
+        if (newCake.getName()==null || newCake.getPrice()==null || newCake.getImage()==null || newCake.getWeight()==null
+                || newCake.getCalories()==null || newCake.getId()==null){
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
-        else {
-            newCake.setId(idCounter);
-            idCounter++;
+        }else {
             cakeList.getCakeList().add(newCake);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
+
     }
 
 }

@@ -43,8 +43,5 @@ public class Cake {
     @JsonProperty("weight")
     private BigDecimal weight;
 
-    public boolean isFull(){
-        return weight != null && name != null && price != null && calories != null && image != null;
-    }
 
 }

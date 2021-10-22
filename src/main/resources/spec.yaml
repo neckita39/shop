@@ -34,12 +34,16 @@ components:
       type: object
       description: Short Info about cakes
       required:
+        - id
         - name
         - calories
         - image
         - price
         - weight
       properties:
+        id:
+          type: number
+          description: Id of cake
         name:
           type: string
           description: Name of cake
